@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package node;
+
+option go_package = "./;node";
+
+message NodeRequest {}
+
+message NodeResponse {
+  string name = 1;
+  string ip = 2;
+  string namespace = 3;
+}
+
+service NodeService {
+  rpc GetNodeInfo(NodeRequest) returns (NodeResponse) {}
+  rpc GetNodeInfoStream(stream NodeRequest) returns (stream NodeResponse) {}
+}
