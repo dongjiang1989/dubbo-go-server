@@ -33,5 +33,5 @@ dubbo:
       port: 20000
   provider:
     services:
-      GreeterProvider:
+      NodeProvider:
         interface: com.apache.dubbo.sample.node.GetNodeInfo # must be compatible with grpc or dubbo-java

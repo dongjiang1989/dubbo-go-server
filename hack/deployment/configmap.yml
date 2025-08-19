@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dubbogo-config
+  namespace: golang-system
+data:
+  client.yml: |
+    dubbo:
+      application:
+        version: 1.0.0
+      metrics:
+        enable: true # default is true
+        path: /metrics # default is /metrics
+        summary-max-age: 60000000000 # 1 minute, default is 10min
+        port: 9090 # default is 9090
+      metadata-report:
+        protocol: zookeeper
+        address: 172.29.235.70:31086,172.29.235.89:31086,172.29.235.57:31086
+      config-center:
+        protocol: nacos
+        address: 172.30.247.114:8848
+        username: nacos
+        password: hgjl3000P&
+        data-id: dubbo-go-samples-configcenter-nacos-client
+        namespace: 141588e1-3f2b-4522-8004-f9428d7c2028 # nacos namespaceID, default is public namespace
+      registries:
+        zk:
+          protocol: zookeeper
+          timeout: 10s
+          address: 172.29.235.70:31086,172.29.235.89:31086,172.29.235.57:31086
+          group: myGroup
+          registry-type: all
+      protocols:
+        triple:
+          name: tri
+          port: 20000
+      logger:
+        level: debug
+      consumer:
+        filter: metrics
+        references:
+          NodeServiceClientImpl: 
+            protocol: tri
+            registry: zk
+            retries: 3
+            timeout: 3000
+            interface: com.apache.dubbo.sample.node.GetNodeInfo  # must be compatible with grpc or dubbo-java  
+  server.yml: |
+    dubbo:
+      application:
+        version: 1.0.0
+      metrics:
+        enable: true # default is true
+        path: /metrics # default is /metrics
+        summary-max-age: 60000000000 # 1 minute, default is 10min
+        port: 9090 # default is 9090
+      metadata-report:
+        protocol: zookeeper
+        address: 172.29.235.70:31086,172.29.235.89:31086,172.29.235.57:31086
+      config-center:
+        protocol: nacos
+        address: 172.30.247.114:8848
+        username: nacos
+        password: hgjl3000P&
+        data-id: dubbo-go-samples-configcenter-nacos-server
+        namespace: 141588e1-3f2b-4522-8004-f9428d7c2028 # nacos namespaceID, default is public namespace
+      registries:
+        zk:
+          protocol: zookeeper
+          timeout: 10s
+          address: 172.29.235.70:31086,172.29.235.89:31086,172.29.235.57:31086
+          group: myGroup # default is dubbo
+          registry-type: all
+      logger:
+        level: debug
+      protocols:
+        triple:
+          name: tri
+          port: 20000
+      provider:
+        services:
+          NodeProvider:
+            filter: metrics
+            interface: com.apache.dubbo.sample.node.GetNodeInfo
