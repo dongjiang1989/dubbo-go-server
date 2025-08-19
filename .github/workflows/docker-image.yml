@@ -34,7 +34,7 @@ jobs:
           -
             name: dubbo-go-client
             image: dongjiang1989/dubbo-go-client:latest
-            file: ./hack/client/Dockerfile
+            file: ./cmd/client/Dockerfile
             platforms: linux/amd64,linux/arm64
     steps:
       - 
