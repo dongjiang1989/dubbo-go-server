@@ -21,6 +21,9 @@ data:
         address: 172.30.247.114:8848
         username: nacos
         password: hgjl3000P&
+        parameters:
+          nacos.cacheDir: "/tmp/"
+          nacos.enableLocalCache: "true"
         data-id: dubbo-go-samples-configcenter-nacos-client
         namespace: 141588e1-3f2b-4522-8004-f9428d7c2028 # nacos namespaceID, default is public namespace
       registries:
@@ -34,13 +37,22 @@ data:
         triple:
           name: tri
           port: 20000
+        dubbo:
+          name: dubbo
+          port: 20001
       logger:
         level: debug
+      shutdown:
+        timeout: 60
+        step-timeout: 3
+        consumer-update-wait-time: 3
+        internal-signal: true
+        offline-request-window-timeout: 0
       consumer:
         filter: metrics
         references:
           NodeServiceClientImpl: 
-            protocol: tri
+            protocol: tri # call rpc with triple protocol
             registry: zk
             retries: 3
             timeout: 3000
@@ -62,6 +74,9 @@ data:
         address: 172.30.247.114:8848
         username: nacos
         password: hgjl3000P&
+        parameters:
+          nacos.cacheDir: "/tmp/"
+          nacos.enableLocalCache: "true"
         data-id: dubbo-go-samples-configcenter-nacos-server
         namespace: 141588e1-3f2b-4522-8004-f9428d7c2028 # nacos namespaceID, default is public namespace
       registries:
@@ -74,9 +89,18 @@ data:
       logger:
         level: debug
       protocols:
+        dubbo:
+          name: dubbo
+          port: 20001
         triple:
           name: tri
           port: 20000
+      shutdown:
+        timeout: 60
+        step-timeout: 3
+        consumer-update-wait-time: 3
+        internal-signal: true
+        offline-request-window-timeout: 0
       provider:
         services:
           NodeProvider:

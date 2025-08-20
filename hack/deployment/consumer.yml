@@ -7,7 +7,7 @@ metadata:
     app: dubbo-app-consumer
     app-type: dubbo
 spec:
-  replicas: 2
+  replicas: 10
   selector:
     matchLabels:
       app: dubbo-app-consumer
@@ -39,6 +39,9 @@ spec:
                   fieldPath: metadata.namespace
           ports:
             - name: dubbo
+              containerPort: 20001
+              protocol: TCP
+            - name: triple
               containerPort: 20000
               protocol: TCP
             - name: metrics
